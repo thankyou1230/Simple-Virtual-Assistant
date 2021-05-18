@@ -29,9 +29,10 @@ class Bot():
             mail.ehlo()
             mail.starttls()
             mail.login('quang0002@gmail.com', '0917787421q')
+            #kêu chờ
             mail.sendmail('quang0002@gmail.com',destination, content.encode('utf-8'))
             mail.close()
-
+            #báo đã xong
 if __name__=='__main__':
     bot=Bot()
     bot.send_email('18520140@gm.uit.edu.vn','Xin chào')
