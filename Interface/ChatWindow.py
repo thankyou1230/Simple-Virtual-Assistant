@@ -21,20 +21,23 @@ class Ui_ChatBot(object):
         self.recordButton = RecordButton(self.centralwidget)
         #Send button
         self.sendButton = SendButton(self.centralwidget)
+        self.sendButton.pressed.connect(self.sendUserMessage)
         #Message Editor
         self.editMessage = MessageEditor(self.centralwidget)
+        self.editMessage.returnPressed.connect(self.sendUserMessage)
         #Message View
         self.MessageView = MessageView(self.centralwidget)
-        
-        self.sendButton.pressed.connect(self.sendUserMessage,)
+    
+    #Display chat window
     def show(self):
         self.ChatBot.show()
         self.app.exec_()
     
 
     def sendUserMessage(self):
-        self.MessageView.MessageList.addMessage('user', self.editMessage.toPlainText())
+        self.MessageView.MessageList.addMessage('user', self.editMessage.text())
         self.MessageView.scrollToBottom()
+        self.editMessage.setText('')
 
     def sendBotMessage(self, message=''):
         self.MessageView.MessageList.addMessage('bot', message)

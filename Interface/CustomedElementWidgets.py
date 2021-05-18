@@ -51,7 +51,7 @@ class SendButton(QtWidgets.QPushButton):
 ######################################################################
 ######################################################################
 
-class MessageEditor(QtWidgets.QTextEdit):
+class MessageEditor(QtWidgets.QLineEdit):
     def __init__(self, *args, **kwargs):
         super(MessageEditor, self).__init__(*args, **kwargs)
         self.setGeometry(QtCore.QRect(60, 460, 311, 41))
@@ -59,8 +59,7 @@ class MessageEditor(QtWidgets.QTextEdit):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.setFont(font)
-        self.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.IBeamCursor))
-        self.setStyleSheet("QTextEdit{\n"
+        self.setStyleSheet("QLineEdit{\n"
                                    "border: none;\n"
                                    "border-radius: 20px;\n"
                                    "corlor: rgb(209, 209, 209);\n"
@@ -72,12 +71,8 @@ class MessageEditor(QtWidgets.QTextEdit):
                                    "padding-bottom:6%\n"
                                    "}")
         self.setLocale(QtCore.QLocale(QtCore.QLocale.Vietnamese, QtCore.QLocale.Vietnam))
-        self.setLineWidth(2)
-        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setPlaceholderText("Type here !")
-        self.setObjectName("chatBox")
-    def keyPressEvent(self, e):
-        if e.key()
+        self.setObjectName("chatBox") 
 
 ##########################################################################
 ##########################################################################
