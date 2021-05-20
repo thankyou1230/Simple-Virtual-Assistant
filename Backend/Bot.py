@@ -11,8 +11,8 @@ import json
 import pathlib
 import webbrowser
 import geocoder
-
-
+import datetime
+import youtube_search
 
 class Bot():
     
@@ -94,19 +94,46 @@ class Bot():
     
     ############################# 6
     def wheather_forecast(self):
+        self.speak('Chờ một chút để tôi tìm nhé')
         locate = geocoder.ip('me').latlng
         api_key='dd1374e7b62f69d53f6696a829430e76'
         url='http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}&lang=vi&units=metric'.format(locate[0],locate[1],api_key)
         try:  
-            #f = urllib.request.urlopen(url)
-            #json_string = f.read()
-            #f.close()
-            #data = json.loads(json_string)
+            f = urllib.request.urlopen(url)
+            json_string = f.read()
+            f.close()
+            data = json.loads(json_string)
             #set data
-            city="Thành phố"+str(geocoder.ip('me').city).replace('City','')
-            
+            city="Thành phố "+str(geocoder.ip('me').city).replace('City','')
+            temp=data['main']['feels_like']
+            humid=data['main']['humidity']
+            wind=data['wind']['speed']
+            vision=data['visibility']
+            weather=data['weather'][0]['description']
+            sunrise=datetime.datetime.fromtimestamp(data['sys']['sunrise'])
+            sunset=datetime.datetime.fromtimestamp(data['sys']['sunset'])
+            #respone
+            forecast_script='Đây rồi. Thời tiết {} hôm nay có {}, nhiệt độ trung bình là {} độ C, độ ẩm là {}%, sức gió {} km trên giờ,\
+                        tầm nhìn xa trên {} mét. Hôm nay mặt trời mọc lúc {} giờ {} phút, lặn lúc {} giờ {} phút. Xin hết'.\
+                        format(city,weather,temp,humid,wind,vision,sunrise.hour,sunrise.minute,sunset.hour,sunset.minute)
+            self.speak(forecast_script)
+            return True
         except Exception as e:
+            self.speak('Xin lỗi hiện tại tôi không thể truy cập vào dữ liệu thời tiết. Xin thử lại sau')
+            return False
+
+    ############################## 7
+    def play_youtube(self,video_name):
+        self.speak('Chờ chút có ngay')
+        try:
+            video = youtube_search.YoutubeSearch(video_name, max_results=1).to_dict()
+            webbrowser.register('chrome',None,webbrowser.BackgroundBrowser("C:\Program Files\Google\Chrome\Application\chrome.exe"))
+            webbrowser.get('chrome').open_new_tab('https://www.youtube.com/watch?v='+video[0]['id'])
+            self.speak('Tôi mở rồi đấy nhé')
+            return True
+        except Exception as e:
+            self.speak('Xin lỗi, hiện tại tôi không thể làm được. Xin thử lại sau')
             return False
 if __name__=='__main__':
     bot=Bot()
-    bot.wheather_forecast()
+    bot.play_youtube('bac phan')
