@@ -13,20 +13,20 @@ import webbrowser
 import geocoder
 import datetime
 import youtube_search
-
+import wikipedia
+import time
+import pyttsx3
 class Bot():
     
+    def __init__(self):
+        self.mouth = pyttsx3.init()
+        voices=self.mouth.getProperty("voices")
+        self.mouth.setProperty("voice",voices[1].id)
+        self.mouth.setProperty('rate', 160)
     ##########################  1
     def speak(self,text):
-        try:
-            tts = gTTS(text=text, lang='vi', slow=False)
-            tts.save("sound.mp3")
-            playsound.playsound("sound.mp3", True)
-            os.remove("sound.mp3")
-            return True
-        except Exception as e:
-            #Không nói được thì tức là mạng không có
-            return False
+        self.mouth.say(text)
+        self.mouth.runAndWait()
 
     ##########################  2
     def listen(self):
@@ -134,6 +134,21 @@ class Bot():
         except Exception as e:
             self.speak('Xin lỗi, hiện tại tôi không thể làm được. Xin thử lại sau')
             return False
+    ############################## 8
+    def define(self,name):
+        self.speak('Để tôi nhớ xem')
+        wikipedia.set_lang('vi')
+        try:
+            contents = wikipedia.summary(name).split('.')
+            self.speak('Theo tôi biết. ' +contents[0])
+            return True
+        except Exception as e:
+            self.speak('Tôi cũng không biết nữa, tìm trên google xem sao')
+            return self.search_google(name)
+    ############################# 9
+
+
+
 if __name__=='__main__':
     bot=Bot()
-    bot.play_youtube('bac phan')
+    bot.define('cá sấu')
