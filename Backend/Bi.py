@@ -16,13 +16,16 @@ import youtube_search
 import wikipedia
 import time
 import pyttsx3
-class Bot():
+
+class Bi():
     
     def __init__(self):
         self.mouth = pyttsx3.init()
         voices=self.mouth.getProperty("voices")
         self.mouth.setProperty("voice",voices[1].id)
-        self.mouth.setProperty('rate', 160)
+        self.mouth.setProperty('rate', 130)
+        self.ear = sr.Recognizer()
+
     ##########################  1
     def speak(self,text):
         self.mouth.say(text)
@@ -30,12 +33,11 @@ class Bot():
 
     ##########################  2
     def listen(self):
-        r = sr.Recognizer()
         with sr.Microphone() as source:
-            print("Tôi: ", end='') 
-            audio = r.listen(source, phrase_time_limit=3)
+            print('listening')
+            audio = self.ear.listen(source, phrase_time_limit=3)
             try:
-                text = r.recognize_google(audio, language="vi-VN")
+                text = self.ear.recognize_google(audio, language="vi-VN")
                 return text
             except Exception as e:
                 return False
@@ -146,9 +148,29 @@ class Bot():
             self.speak('Tôi cũng không biết nữa, tìm trên google xem sao')
             return self.search_google(name)
     ############################# 9
+    def set_alarm(self,time):
+        pass
+    
+    ############################ 10
+    def analysis_request(self, request):
+        pass
+            
 
+    ############################# 11
+    def respone(self, action):
+        pass
 
+    ############################# 12
+    def community(self):
+        self.listen()
+    
+    #############################
 
 if __name__=='__main__':
-    bot=Bot()
-    bot.define('cá sấu')
+    bot=Bi()
+    while 1:
+        a=bot.listen()
+        print(a)
+        if a:    
+            bot.define(a)
+        time.sleep(2)
