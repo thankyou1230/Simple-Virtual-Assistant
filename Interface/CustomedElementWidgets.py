@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from MessageBubble import MessageDelegate, MessageModel
+from .MessageBubble import MessageDelegate, MessageModel
 
 class RecordButton(QtWidgets.QPushButton):
     def __init__(self, *args, **kwargs):
@@ -18,11 +18,10 @@ class RecordButton(QtWidgets.QPushButton):
                                         "}")
         self.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./Icon/recordVoice.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("Interface/Icon/recordVoice.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setIcon(icon)
         self.setIconSize(QtCore.QSize(40, 40))
         self.setObjectName("recordButton")
-
 ###################################################################
 ###################################################################
 
@@ -43,7 +42,7 @@ class SendButton(QtWidgets.QPushButton):
                                       "}")
         self.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./Icon/send.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("Interface/Icon/send.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setIcon(icon)
         self.setIconSize(QtCore.QSize(55, 53))
         self.setObjectName("sendButton")

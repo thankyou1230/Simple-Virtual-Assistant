@@ -59,8 +59,8 @@ conversations:
   - Tạm biệt, hẹn gặp lại
 - - Mình đi đây
   - Tạm biệt
-- - Bai
-  - Bye Bye
+- - Bye Bye
+  - OK hẹn gặp lại sau 
 - - Bái bai
   - Hẹn gặp lại
 - - Bạn tên gì
@@ -82,5 +82,7 @@ conversations:
 - - Bạn biết tôi là ai không
   - Biết chứ, bạn là người tạo ra tôi mà
 - - Bạn có biết là ai không
-  - Thật ngại quá, tôi không biết :D
+  - Thật ngại quá, tôi không biết
+- - ok
+  - ok bạn
 
