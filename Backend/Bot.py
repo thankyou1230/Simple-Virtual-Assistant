@@ -56,7 +56,7 @@ class Bi():
     def listen(self):
         with sr.Microphone() as source:
             print('listening')
-            audio = self.ear.listen(source, phrase_time_limit=5)
+            audio = self.ear.listen(source, phrase_time_limit=3.5)
             try:
                 text = self.ear.recognize_google(audio, language="vi-VN")
                 return text
