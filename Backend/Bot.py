@@ -14,12 +14,18 @@ import youtube_search
 import wikipedia
 import time
 import pyttsx3
-from chatterbot import ChatBot
+from threading import Thread
+from .TrainChatBot import TrainedChatBot
 class Bi():
     
     def __init__(self):
         #ChatBot đã được huấn luyện
-        self.brain=ChatBot('Bi')
+        self.brain=TrainedChatBot(name='Bi', read_only=True, 
+                storage_adapter='chatterbot.storage.SQLStorageAdapter',
+                database_uri='sqlite:///database.sqlite3',
+                 logic_adapters=['chatterbot.logic.MathematicalEvaluation',
+                                 'chatterbot.logic.BestMatch']
+                )
         self.talking_speed=130
         #module pyttsx3 giúp chuyển văn bản thành âm thanh
         self.mouth = pyttsx3.init()
@@ -31,12 +37,19 @@ class Bi():
 
     # Input: Text
     # Chức năng: Phát ra âm thanh đoạn Text
-    # Output: Text
+    # Output: không có
     def speak(self,text):
-        self.mouth.say(text)
-        self.mouth.runAndWait()
-        return text
+        try:
+            self.mouth.say(text)
+            self.mouth.runAndWait()
+        except Exception:
+            pass
 
+
+    def multiprocess_speak(self,text):
+        thread=Thread(target=self.speak,args=(text,))
+        thread.start()
+        return text
     # Input: không
     # Chức năng: Nhận âm thanh từ microphone và chuyển thành Text
     # Output: Text nhận dạng được
@@ -66,9 +79,9 @@ class Bi():
                 mail.login('quang0002@gmail.com', '0917787421q')
                 mail.sendmail('quang0002@gmail.com',destination, msg.as_string().encode('utf-8'))
                 mail.close()
-            return self.speak('Tôi đã gửi đi thành công rồi nhé')
+            return self.multiprocess_speak('Tôi đã gửi đi thành công rồi nhé')
         except Exception as e:
-            return self.speak('Hình như có trục trặc gì đó, hãy kiểm tra và làm lại nhé')
+            return self.multiprocess_speak('Hình như có trục trặc gì đó, hãy kiểm tra và làm lại nhé')
     
     # Input: Không có
     # Chức năng: Gọi api tải về hình ngẫu nhiên và đặt làm hình nền máy tính
@@ -87,9 +100,9 @@ class Bi():
             save_path=os.path.join(pathlib.Path(__file__).parent.absolute(),'Source\img.png')
             urllib.request.urlretrieve(photo, save_path)
             ctypes.windll.user32.SystemParametersInfoW(20,0,save_path,3)
-            return self.speak('Mình đã đổi xong rồi đấy, bạn coi thử xem')
+            return self.multiprocess_speak('Mình đã đổi xong rồi đấy, bạn coi thử xem')
         except Exception as e:
-            return self.speak('Xin lỗi hiện tại mình không thể đổi được ảnh nền giúp bạn, một lát thử lại nhé')
+            return self.multiprocess_speak('Xin lỗi hiện tại mình không thể đổi được ảnh nền giúp bạn, một lát thử lại nhé')
 
     
     # Input: đoạn text muốn search
@@ -101,9 +114,9 @@ class Bi():
         try:
             webbrowser.register('chrome',None,webbrowser.BackgroundBrowser("C:\Program Files\Google\Chrome\Application\chrome.exe"))
             webbrowser.get('chrome').open_new_tab(url)
-            return self.speak('Có rồi nhé')
+            return self.multiprocess_speak('Có rồi nhé')
         except Exception as e:
-            return self.speak('Xin lỗi, hiện tại mình không gọi được cho chị gu gồ')
+            return self.multiprocess_speak('Xin lỗi, hiện tại mình không gọi được cho chị gu gồ')
     
     # Input: không có
     # Chức năng: gọi api lấy về dự báo thời tiết của vị trí hiện tại trong hôm nay
@@ -129,12 +142,12 @@ class Bi():
             sunset=datetime.datetime.fromtimestamp(data['sys']['sunset'])
             #respone
             self.speak('đây rồi')
-            forecast_script='Thời tiết {} hôm nay có {}, nhiệt độ trung bình là {} độ C, độ ẩm là {}%, sức gió {} km trên giờ,\
+            forecast_script='Thời tiết {}hôm nay có {}, nhiệt độ trung bình là {} độ C, độ ẩm là {}%, sức gió {} km trên giờ,\
                         tầm nhìn xa trên {} mét. Hôm nay mặt trời mọc lúc {} giờ {} phút, lặn lúc {} giờ {} phút. Xin hết'.\
                         format(city,weather,temp,humid,wind,vision,sunrise.hour,sunrise.minute,sunset.hour,sunset.minute)
-            return self.speak(forecast_script)
+            return self.multiprocess_speak(forecast_script)
         except Exception as e:
-            return self.speak('Bạn ơi hiện tại mình không thể truy cập vào dữ liệu thời tiết, xin lỗi nhé')
+            return self.multiprocess_speak('Bạn ơi hiện tại mình không thể truy cập vào dữ liệu thời tiết, xin lỗi nhé')
 
     # Input: tên video
     # Chức năng: mở video theo yêu cầu trên youtube trong tab mới, bằng trình duyệt chrome
@@ -145,9 +158,9 @@ class Bi():
             video = youtube_search.YoutubeSearch(video_name, max_results=1).to_dict()
             webbrowser.register('chrome',None,webbrowser.BackgroundBrowser("C:\Program Files\Google\Chrome\Application\chrome.exe"))
             webbrowser.get('chrome').open_new_tab('https://www.youtube.com/watch?v='+video[0]['id'])
-            return self.speak('Tôi mở rồi đấy. Mời bạn thưởng thức nhá')
+            return self.multiprocess_speak('Tôi mở rồi đấy. Mời bạn thưởng thức nhá')
         except Exception as e:
-            return self.speak("Hình như hết tiền mạng rồi :D")
+            return self.multiprocess_speak("Hình như hết tiền mạng rồi :D")
     
     # Input: tên cần định nghĩa
     # Chức năng: tìm định nghĩa trên wikipedia
@@ -157,9 +170,9 @@ class Bi():
         try:
             wikipedia.set_lang('vi')
             contents = wikipedia.summary(name).split('.')
-            return self.speak('Theo mình biết: ' +contents[0])
+            return self.multiprocess_speak('Theo mình biết: ' +contents[0])
         except Exception as e:
-            return self.speak('Mình cũng không biết nữa. Chị gu gồ chắc sẽ biết đó')
+            return self.multiprocess_speak('Mình cũng không biết nữa. Chị gu gồ chắc sẽ biết đó')
     
     # Input: không có
     # Chức năng: lấy thời gian hiện tại
@@ -183,18 +196,18 @@ class Bi():
         if request=='':
             return
         if 'bi ơi' in request:
-            return self.speak('Mình đây, bạn cần gì')
+            return self.multiprocess_speak('Mình đây, bạn cần gì')
         elif "tạm biệt bạn" in request:
-            self.speak('Tạm biệt, hãy gọi tôi khi cần nhé')
+            self.multiprocess_speak('Tạm biệt, hãy gọi tôi khi cần nhé')
             #tắt chương trình
             pass
         elif "hiện tại" in request or "mấy giờ" in request or 'bây giờ là' in request:
             response='Bây giờ là '+self.get_time()
-            self.speak(response)
+            self.multiprocess_speak(response)
             return response
         elif 'hôm nay là' in request or 'ngày mấy' in request:
             response='Hôm nay là '+self.get_date()
-            self.speak(response)
+            self.multiprocess_speak(response)
             return response
         elif 'tìm' in request:
             if request.split(' ').index('tìm')==0:
@@ -217,7 +230,7 @@ class Bi():
         elif ('là gì' in request or 'là ai' in request) and 'bạn là ai' not in request:
             return self.define(request.replace('là gì','').replace('là ai',''))
         else:
-            return self.speak(str(self.brain.get_response(request)))
+            return self.multiprocess_speak(str(self.brain.get_response(request)))
 
 
 if __name__=='__main__':

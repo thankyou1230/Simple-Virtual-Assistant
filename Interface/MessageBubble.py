@@ -10,11 +10,13 @@ USER_BACK=QtGui.QColor('#217eff')
 BOT_TEXT=QtGui.QColor('black')
 BOT_BACK=QtGui.QColor('#c8d0e3')
 
-class MessageDelegate(QtWidgets.QStyledItemDelegate):
+class MessageDelegate(QtWidgets.QStyledItemDelegate): #abstact class có săn dùng để implemet lại
     def paint(self, painter, option, index):
         sender_name, Text=index.model().data(index, QtCore.Qt.DisplayRole)
         painter.setFont(QtGui.QFont(FONT))
         painter.setPen(QtCore.Qt.NoPen)
+        if sender_name=='user':
+            option.displayAlignment = QtCore.Qt.AlignRight
         if sender_name=='user':
             painter.setBrush(USER_BACK)
         elif sender_name=='bot':
@@ -50,7 +52,7 @@ class MessageModel(QtCore.QAbstractListModel):
     def addMessage(self, sender_name, message):
         if message:
             self.Messages.append((sender_name, message))
-            self.layoutChanged.emit()
+        self.layoutChanged.emit()
     def count(self):
         return len(self.Messages)
  
