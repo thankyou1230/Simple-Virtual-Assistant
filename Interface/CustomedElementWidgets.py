@@ -2,6 +2,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from .MessageBubble import MessageDelegate, MessageModel
 
 class RecordButton(QtWidgets.QPushButton):
+    """
+    -----------------------------------------------------------------------------------
+    Lớp RecordButton :
+    
+        Kế thừ từ lớp QPushButton, tham khảo tại: https://doc.qt.io/qt-5/qpushbutton.html
+        Được cấu hình lại để đại diện cho chức năng thu âm
+    -----------------------------------------------------------------------------------
+    """
     def __init__(self, *args, **kwargs):
         super(RecordButton, self).__init__(*args, **kwargs)
         self.setGeometry(QtCore.QRect(10, 460, 41, 41))
@@ -22,10 +30,20 @@ class RecordButton(QtWidgets.QPushButton):
         self.setIcon(icon)
         self.setIconSize(QtCore.QSize(40, 40))
         self.setObjectName("recordButton")
+
 ###################################################################
 ###################################################################
 
 class SendButton(QtWidgets.QPushButton):
+    """
+    -----------------------------------------------------------------------------------
+    Lớp SendButton :
+    
+        Kế thừ từ lớp QPushButton, tham khảo tại: https://doc.qt.io/qt-5/qpushbutton.html
+        Được cấu hình lại để đại diện cho chức năng gửi đi tin nhắn
+    -----------------------------------------------------------------------------------
+    """
+
     def __init__(self, *args, **kwargs):
         super(SendButton, self).__init__(*args, **kwargs)
         self.setGeometry(QtCore.QRect(380, 460, 41, 41))
@@ -51,6 +69,15 @@ class SendButton(QtWidgets.QPushButton):
 ######################################################################
 
 class MessageEditor(QtWidgets.QLineEdit):
+    """
+    -----------------------------------------------------------------------------------
+    Lớp SendButton :
+    
+        Kế thừ từ lớp QLineEdit, tham khảo tại: https://doc.qt.io/qt-5/qlineedit.html
+        Được cấu hình lại để đại diện cho khung nhập tin nhắn
+    -----------------------------------------------------------------------------------
+    """
+
     def __init__(self, *args, **kwargs):
         super(MessageEditor, self).__init__(*args, **kwargs)
         self.setGeometry(QtCore.QRect(60, 460, 311, 41))
@@ -77,6 +104,15 @@ class MessageEditor(QtWidgets.QLineEdit):
 ##########################################################################
 
 class MessageView(QtWidgets.QListView):
+    """
+    -----------------------------------------------------------------------------------
+    Lớp MessageView :
+    
+        Kế thừ từ lớp QListView, tham khảo tại: https://doc.qt.io/qt-5/qlistview.html
+        Được cấu hình lại để làm khung hiển thị các tin nhắn của cuộc trò chuyện 
+    -----------------------------------------------------------------------------------
+    """
+
     def __init__(self, *args, **kwargs):
         super(MessageView, self).__init__(*args, *kwargs)
         self.setGeometry(QtCore.QRect(10, 10, 410, 430))
@@ -92,3 +128,5 @@ class MessageView(QtWidgets.QListView):
         self.setModel(self.MessageList)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
+if __name__=='__main__':
+    print(RecordButton.__doc__)
