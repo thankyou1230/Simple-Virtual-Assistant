@@ -1,4 +1,5 @@
-import os
+
+from . import TrainChatBot
 import speech_recognition as sr
 import smtplib
 from email.mime.text import MIMEText
@@ -15,17 +16,19 @@ import wikipedia
 import time
 import pyttsx3
 from threading import Thread
-from .TrainChatBot import TrainedChatBot
+import sys
+import os
+
 class Bi():
     
     def __init__(self):
         #ChatBot đã được huấn luyện
-        self.brain=TrainedChatBot(name='Bi', read_only=True, 
-                storage_adapter='chatterbot.storage.SQLStorageAdapter',
-                database_uri='sqlite:///database.sqlite3',
-                 logic_adapters=['chatterbot.logic.MathematicalEvaluation',
+        self.brain=TrainChatBot.TrainedChatBot(name='Bi', read_only=True,
+                                               storage_adapter='chatterbot.storage.SQLStorageAdapter',
+                                               database_uri='sqlite:///database.sqlite3',
+                                               logic_adapters=['chatterbot.logic.MathematicalEvaluation',
                                  'chatterbot.logic.BestMatch']
-                )
+                                               )
         self.talking_speed=130
         #module pyttsx3 giúp chuyển văn bản thành âm thanh
         self.mouth = pyttsx3.init()
