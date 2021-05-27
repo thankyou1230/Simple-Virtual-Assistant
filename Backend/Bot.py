@@ -1,4 +1,5 @@
-import os
+
+from .TrainChatBot import TrainedChatBot
 import speech_recognition as sr
 import smtplib
 from email.mime.text import MIMEText
@@ -15,7 +16,9 @@ import wikipedia
 import time
 import pyttsx3
 from threading import Thread
-from .TrainChatBot import TrainedChatBot
+import sys
+import os
+
 class Bi():
     """
     -----------------------------------------------------------------------------------------
