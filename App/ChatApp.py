@@ -71,7 +71,7 @@ class ChatApp(object):
         #thread.start()
         self.__editMessage.setPlaceholderText('')
         self.__MessageView.scrollToBottom()
-        if 'tạm biệt bạn' in request.lower():
+        if 'tạm biệt bạn' == request.lower() or 'tạm biệt' == request.lower():
             self.close()
     
 
@@ -95,7 +95,7 @@ class ChatApp(object):
         self.__editMessage.setPlaceholderText('Bi đang nghe bạn nói đấy')
         self.__on_listening()
         QtWidgets.QApplication.processEvents()
-        request=self.bot.listen()
+        request=self.__bot.listen()
         self.__has_listened()
         QtWidgets.QApplication.processEvents()
         self.__editMessage.setPlaceholderText('Chờ Bi xử lí chút nhé')
@@ -109,7 +109,7 @@ class ChatApp(object):
         #thread.start()
         #########
         self.__MessageView.scrollToBottom()
-        if 'tạm biệt bạn' in request.lower():
+        if 'tạm biệt bạn' == request.lower() or 'tạm biệt' == request.lower():
             self.close()
 
 

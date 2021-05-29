@@ -16,7 +16,6 @@ import wikipedia
 import time
 import pyttsx3
 from threading import Thread
-import sys
 import os
 
 class Bi():
@@ -323,7 +322,7 @@ class Bi():
             return self.multiprocess_speak('Mình đây, bạn cần gì')
         elif 'làm được gì' in request or 'có thể làm gì' in request:
             return self.multiprocess_speak('Tôi có thể trò chuyện, làm toán tiểu học, tìm kiếm, mở video, thay đổi hình nền và trả lời những câu hỏi của bạn')
-        elif "tạm biệt bạn" in request:
+        elif "tạm biệt bạn" == request or "tạm biệt" == request:
             return self.multiprocess_speak('Bái bai')
         elif "hiện tại" in request or "mấy giờ" in request or 'bây giờ là' in request:
             response='Bây giờ là '+self.get_time()
